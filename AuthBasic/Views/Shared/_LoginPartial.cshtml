@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/js/LogInLogOut.js"></script> 
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+    <span id="logout" class="link-like" >Log out</span>
+    <span style="white-space:pre-wrap"> | </span>
+    <div>Logged in as @Html.ActionLink(@User.Identity.Name, "", "Account")</div>
+}
+
+else{
+    <span id="login" class="link-like" >Log in</span>
+    <span style="white-space:pre-wrap"> | </span>
+    <span id="register" class="link-like" >Register</span>
+}
+
+<script>
+    $('#logout').click(log_out)
+    $('#login').click(log_in)
+    $('#register').click(log_in)
+</script>

@@ -1,0 +1,174 @@
+body{
+    background-color: #323437;
+    /* margin: 2%; */
+}
+
+.media-container{
+    text-align: center;
+}
+
+video{
+    max-height: 90vh;
+    max-width: 100%;
+}
+
+img{
+    max-height: 90vh;
+    max-width: 100%;
+}
+
+
+#post-submit-form{
+    background-color:rgb(158, 156, 156);
+    padding: 10px;
+    border: 5px solid black;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+#login-overlay{
+    display: none;
+    width:500px;
+    margin:0 auto;
+    background:white;
+    border: 5px solid black;
+    position:fixed;
+    left:50%;
+    top:50%;
+    margin-left:-250px;
+    margin-top:-337.5px;
+}
+
+.error{
+    color:rgb(151, 35, 35)
+}
+
+.escape-x{
+    font-size: 20px;
+    float:right;
+}
+
+#login-overlay > div{
+    padding: 10px;
+    margin: 10px;
+    background-color:rgb(158, 156, 156);
+}
+
+#login-overlay > div > span{
+    font-size: 30px;
+}
+
+.comment{
+    padding: 10px;
+    margin: 10px 0 10px 0;
+}
+
+textarea{
+    width:100%;
+}
+
+.link-like{
+    color: #0366d6;
+    cursor:pointer;
+}
+.link-like:hover{
+    text-decoration: underline;
+}
+
+.reply-text:hover{
+    text-decoration: underline;
+}
+
+.comment-True{
+    background-color:#d1d0c5;
+}
+
+.comment-False{
+    background-color:rgb(158, 156, 156);
+}
+
+.post{
+    background-color:rgb(158, 156, 156);
+    margin: 0.5% 0 0.5% 0;
+    padding: 10px;
+}
+
+.post-body{
+    background-color:rgb(158, 156, 156);
+    margin: 0.5% 0 0.5% 0;
+    padding: 10px;
+
+}
+
+.source-links{
+    margin: auto;
+    margin-top: 5px;
+    display: block;
+    width: 20%;
+    /* text-align: center; */
+}
+
+.comments-post{
+    background-color:#d1d0c5;
+    padding: 1%;
+    margin-bottom: 1%;
+}
+
+.grid-container{
+    display: grid;
+    grid-template-areas: 
+    '_left search-bar'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right'
+    '_left _right';
+    overflow: hidden;
+    height: 90vh;
+}
+
+.grid-item{
+    text-align: center;
+    overflow: scroll;
+    overflow-x: hidden;
+    background-color:rgb(158, 156, 156);
+    border: 1px solid black; 
+}
+
+.grid-subitem{ 
+    border: 1px solid black; 
+    padding: 5px;
+    font-size: 20px;
+}
+
+#sub-search{
+    grid-area: search-bar;
+}
+#categories{
+    grid-area: _left;
+    width: 29vw;
+}
+#subreddits{
+    grid-area: _right;
+    width: 29vw;
+}

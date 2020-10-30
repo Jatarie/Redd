@@ -1,0 +1,15 @@
+@model RedditPost
+
+<div class="post">
+
+    <div id="@Model.name">
+        <a href="@Model.url">@Model.title</a>
+        <div>
+            submitted by <a href="/reddit/user/@Model.author">@Model.author</a> @Model.created_string 
+        </div>
+        <div>
+            <span>@Model.score points</span>
+            <span><a href="/reddit/comments/@Model.id">@Model.num_comments comments</a></span>
+        </div>
+    </div>
+</div>

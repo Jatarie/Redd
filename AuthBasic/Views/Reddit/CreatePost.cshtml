@@ -1,0 +1,75 @@
+@model AuthBasic.Models.RedditPost
+@using Microsoft.AspNetCore.Identity
+
+    <form id="post-submit-form" >
+        <div class="form-group">
+            <label asp-for="title" ></label>
+            <input asp-for="title" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label asp-for="body" ></label>
+            <textarea asp-for="body" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="url" ></label>
+            <input asp-for="url" class="form-control"/>
+        </div>
+        <input asp-for="author" type="hidden" value=@User.Identity.Name/>
+        <input asp-for="subreddit" value="@ViewData["subreddit"]" type="hidden"/>
+        @Html.AntiForgeryToken()
+        <input type="submit" value="Submit Post" class="btn btn-primary"/>
+    </form>
+
+<script>
+
+    $('#post-submit-form').submit(function(e){
+        console.log("A")
+
+        if ("@User.Identity.Name" == ""){
+            log_in();
+            return false;
+        }
+        else{
+            console.log("B")
+            e.preventDefault();
+
+            let post = new Object();
+
+            let inputs = $('#post-submit-form :input');
+            post.title = inputs[0].value;
+            post.body = inputs[1].value;
+            post.url = inputs[2].value;
+            post.author = inputs[3].value;
+            post.subreddit = inputs[4].value;
+
+            var form = $('#post-submit-form');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            console.log("C")
+            $.ajax({
+                type: "POST",
+                data: {
+                    __RequestVerificationToken: token, 
+                    post: post
+                },
+                url: "/Reddit/CreatePost",
+                success: function (response) {
+                    if (response.success){
+                        console.log(response)
+                        location.reload()
+                    }
+                    else{
+                        console.log("no")
+                        // $("#login-error").html("invalid username or password");
+                        // $("#login-password").val("").focus();
+                    }
+                },
+                failure: function(data){
+                    console.log("failure ajx")
+                }
+            });
+            return true;
+        }
+    })
+
+        
+</script>

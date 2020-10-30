@@ -1,0 +1,123 @@
+@using System.Text.RegularExpressions
+@model RedditPost
+
+<div class="post" id="@Model.name">
+    <div class="media-container">
+        <div>
+            @Model.url
+        </div>
+        @if(Model.url.Contains("redgifs") || Model.url.Contains("gfycat") || Model.url.Contains("gifv")){
+            <video id="video-@Model.name" controls muted loop>
+                <source id="video-source-@Model.name" type="video/mp4">
+            </video>
+        }
+        else{
+            <img src="@Model.url">
+        }
+    </div>
+    <button class="source-links btn btn-primary" id="source-@Model.name">
+        ▼ Source ▼
+    </button>
+    <div id="source-links-@Model.name"></div>
+</div>
+
+<script>
+
+
+    $(document).ready(function(){
+
+        let bigCommentsString = "";
+        let runnable = true;
+        $("#source-@Model.name").click(function(){ 
+            if (runnable){
+                runnable = false;
+            }
+            else{
+                return;
+            }
+            bigCommentsString = "";
+            $("#source-links-@Model.name").html("Fetching...");
+            comments = [];
+            url = "https://api.reddit.com/comments/@Model.id";
+            $.ajax({
+                url: `https://api.reddit.com/comments/@Model.id`,
+                success: function(r){
+                    $("#source-links-@Model.name").html("");
+                    let children = r[1]["data"]["children"]
+                    Object.keys(children).forEach(e => {
+                        if (children[e]["kind"] == "more"){
+                            return;
+                        }
+                        let childData = children[e]["data"];
+                        bigCommentsString += childData.body;
+                        get_more_comments(children[e]);
+                    })
+                    var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@@?^=%&amp;:\/~+#-]*[\w@@?^=%&amp;\/~+#-])?/gmis
+                    let urls = bigCommentsString.match(urlPattern);
+                    if(urls != null){
+                        for(let i=0; i<urls.length; i++){
+                            $("#source-links-@Model.name").append(`<div style="text-align:center"><a href="${urls[i]}">${urls[i]}</a></div>`);
+                        }
+                    }
+                    else{
+                        $("#source-links-@Model.name").html("No sources found");
+                    }
+                runnable = true;
+                }
+            })
+
+        })
+
+        function get_more_comments(parent){
+             if (parent["data"]["replies"] == ""){
+                 return;
+             }
+             children = parent["data"]["replies"]["data"]["children"];
+             children.forEach (child => {
+                 if (child["kind"] == "more") {
+                     return;
+                 }
+                childData = child["data"];
+                bigCommentsString += childData.body;
+                get_more_comments(child);
+             })
+         }
+
+
+        let redgfy = function(site){
+            var url = "@Model.url";
+            var RX = /\/\w+/gm;
+            var match = url.match(RX).pop().slice(1,);
+            console.log(match)
+            $.ajax({
+                url: `https://api.${site}.com/v1/gfycats/${match}`,
+                success: function(response){
+                    $("#video-source-@Model.name").attr("src", response.gfyItem.mp4Url);
+                    document.getElementById("video-@Model.name").src = response.gfyItem.mp4Url;
+                    $(`#video-@Model.name`)[0].load();
+                }
+            })
+        }
+
+        var url = "@Model.url";
+        if (url.match(/(redgifs|gfycat)/gm)){
+            $("#video-@Model.name").on('error', function(){
+                redgfy("gfycat");
+                $("#video-@Model.name").on('error', function(){});
+            })
+            redgfy("redgifs");
+            var RX = /\w+$/gm
+            var match = url.match(RX)[0];
+            redgfy("redgifs");
+        }
+        else if(url.match(/\.gifv/gm)){
+            var mp4 = url.replace(".gifv", ".mp4");
+            $(`#video-source-@Model.name`).attr("src", mp4);
+            $(`#video-@Model.name`)[0].load();
+        }
+
+    })
+
+
+
+</script>

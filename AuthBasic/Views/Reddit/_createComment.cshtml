@@ -1,0 +1,34 @@
+@model AuthBasic.Models.RedditComment
+@using Microsoft.AspNetCore.Identity
+
+<script src="~/js/LogInLogOut.js"></script> 
+
+<!-- TODO: seems bad to have form id be the same for every comment form, no idea what side effects this will cause -->
+
+<form id="comment-submit-form" asp-controller="Reddit" asp-action="CreateComment" asp-route-ReturnURL="/reddit/comments/@Model.postID">
+    <textarea id="textarea-@Model.id" asp-for="body"></textarea>
+    <input asp-for="author" type="hidden" value="@User.Identity.Name"/>
+    <input asp-for="postID" type="hidden" value="@Model.postID"/> 
+    <input asp-for="parentID" type="hidden" value="@Model.id"/> 
+    <input type="submit" value="Submit"/>
+</form>
+
+
+<script>
+    $('#comment-submit-form').submit(function(e){
+        if ("@User.Identity.Name" == ""){
+            log_in();
+            return false;
+        }
+        else{
+            return true;
+        }
+    })
+
+    $('#textarea-@Model.id').focus(function(){
+        if("@User.Identity.Name" == ""){
+            log_in();
+        }
+    })
+
+</script>

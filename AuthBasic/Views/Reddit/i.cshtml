@@ -1,0 +1,109 @@
+<head>
+    <link rel="stylesheet" runat="server" media="screen" href="~/css/styles.css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript" src="~/js/cat.js"></script>
+</head>
+<body>
+
+<h1>@ViewData["subreddit"]</h1>
+
+
+
+<button class="btn btn-primary" onclick="okaydude(event)">all</button>
+<button class="btn btn-primary" onclick="okaydude(event)">year</button>
+<button class="btn btn-primary" onclick="okaydude(event)">month</button>
+<button class="btn btn-primary" onclick="okaydude(event)">week</button>
+<button class="btn btn-primary" onclick="okaydude(event)">day</button>
+<div id="grid">
+</div>
+<div class="last"></div>
+</body>
+
+
+<script>
+
+    function okaydude(a){
+        $("#grid").html("")
+        canCall = true;
+        what(null, null, a.target.innerHTML);
+    }
+
+    var rate = 100;
+    var passed = 0;
+    var last_timestamp = window.performance.now();
+
+    $(window).scroll(function() {
+        if (passed >= rate){
+            passed = 0;
+            $(".post").each((i, e) => {
+                var top_of_element = $("#" + e.id).offset().top;
+                var bottom_of_element = $("#" + e.id).offset().top + $("#" + e.id).outerHeight();
+                var bottom_of_screen = $(window).scrollTop() + $(window).innerHeight();
+                var top_of_screen = $(window).scrollTop();
+
+                if ((bottom_of_screen > top_of_element) && (top_of_screen < bottom_of_element)){
+                    try{
+                        document.getElementById(`video-${e.id}`).play()
+                    }
+                    catch{
+                    }
+                }
+                 else {
+                    try{
+                        document.getElementById(`video-${e.id}`).pause()
+                    }
+                    catch{
+                    }
+                }
+
+            })
+        }
+        else{
+            passed += (window.performance.now()) - last_timestamp;
+        }
+        last_timestamp = window.performance.now()
+    });
+
+    var canCall = true;
+    function what(e, j, t="all") {
+
+        if (canCall) {
+            canCall = false;
+        }
+        else{
+            return;
+        }
+
+
+        var PostArray = document.getElementsByClassName("last");
+        var LastPostID = $(".post").last().attr("id");
+        if (LastPostID == undefined){
+            LastPostID = "";
+        }
+        var Subreddit = window.location.pathname.match(/\/\w\/\w+/gm)[0].slice(3);
+
+        $.ajax({
+            url: `/Reddit/Images?subreddit=${Subreddit}&after=${LastPostID}&t=${t}`,
+            success: function (data) {
+                $('#grid').append(data);
+                setTimeout(() => {
+                    canCall = true;
+                }, 100);
+            }
+        });
+    }
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        let options = {
+            rootMargin: '0px',
+            threshold: 1.0
+        }
+
+        var observer = new IntersectionObserver(what, options);
+
+        var target = document.getElementsByClassName('last')[0];
+        observer.observe(target);
+    });
+
+
+</script>

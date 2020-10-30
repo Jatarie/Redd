@@ -1,0 +1,68 @@
+@await Html.PartialAsync("_ValidationScriptsPartial")
+@model AuthBasic.Models.UserRegistrationModel
+
+<form id="register-form">
+    <div class="form-group">
+        <label for="UserName" >Username</label>
+        <input  for="UserName" class="form-control" name="UserName" placeholder="username" required/>
+    </div>
+    <div class="form-group">
+        <label for="Password" >Password</label>
+        <input id="register-password" type="password" name="register-password" class="form-control" placeholder="password" required/>
+    </div>
+    <div class="form-group">
+        <label for="PasswordConfirmation" >Confirm Password</label>
+        <input id="register-password-confirmation" type="password" name="register-password-confirmation" class="form-control" placeholder="password confirmation" required/>
+    </div>
+    <input type="submit" value="Register" class="btn btn-primary"/>
+    @Html.AntiForgeryToken()
+</form>
+
+<script>
+
+    $('#register-form').validate({
+        submitHandler: function(){submitRegistrationForm();},
+        rules:{
+            "register-password-confirmation": {
+                equalTo: "#register-password",
+            },
+            "UserName": {
+                remote: "/Account/Validate_Username"
+            }
+        },
+        messages:{
+            "UserName": "username not avaliable",
+            "register-password-confirmation": "passwords do not match",
+        }
+
+    })
+
+    function submitRegistrationForm(){
+        var userRegistration = new Object();
+
+        var inputs = $('#register-form :input');
+        userRegistration.UserName = inputs[0].value;
+        userRegistration.Password = inputs[1].value;
+
+        var form = $('#register-form');
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+        console.log(userRegistration)
+        $.ajax({
+            type: "POST",
+            data: {
+                __RequestVerificationToken: token, 
+                userRegistration: userRegistration
+            },
+            url: "/Account/Register",
+            success: function (data) {
+                console.log("hey")
+                location.reload()
+            },
+            failure: function(data){
+                console.log("no")
+            }
+        });
+        return true;
+    }
+        
+</script>

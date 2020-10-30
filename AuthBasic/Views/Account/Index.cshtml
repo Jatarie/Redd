@@ -1,0 +1,9 @@
+@using Microsoft.AspNetCore.Identity
+
+
+Logged in as @User.Identity.Name
+
+
+<form asp-controller="account" asp-action="LogOut" >
+    <input type="submit" value="LogOut"/>
+</form>

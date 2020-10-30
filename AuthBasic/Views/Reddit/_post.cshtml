@@ -1,0 +1,8 @@
+@model IEnumerable<AuthBasic.Models.RedditPost>;
+
+@{
+var shit = Model.ToList();
+}
+@for (int i=0; i < shit.Count; i ++) {
+    @Html.DisplayFor(modelItem => shit[i])
+}

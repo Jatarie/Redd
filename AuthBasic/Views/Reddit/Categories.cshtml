@@ -1,0 +1,49 @@
+<head>
+    <link rel="stylesheet" runat="server" media="screen" href="~/css/styles.css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript" src="~/js/cat.js"></script>
+</head>
+<body>
+
+<div class="grid-container">
+    <div class="grid-item" id="sub-search"><input id="sub-searchbar"></div>
+    <div class="grid-item" id="categories"></div>
+    <div class="grid-item" id="subreddits"></div>
+</div>
+
+<style>
+    body{overflow-y: hidden}
+</style>
+
+<script>
+
+    $("#sub-searchbar").on("keyup", () => GetSubredditsSearched($("#sub-searchbar").val()))
+
+    Object.keys(cats).forEach(element => $("#categories").append(`<div class="link-like grid-subitem" onclick="GetSubreddits(event)">${element}</div>`));
+
+    function GetSubreddits(e){
+        var stuff = e.target.innerHTML;
+        $("#subreddits").html("");
+        cats[stuff].forEach(element => {
+            $("#subreddits").append(`<div class="grid-subitem"><a href="/reddit/i/${element}">${element}</a></div>`)
+        })
+    }
+
+    function GetSubredditsSearched(query){
+        console.log("hey")
+        if (query.length < 3){
+            console.log(query)
+            return;
+        }
+        $("#subreddits").html("");
+        var RX = new RegExp(`${query}`);
+        Object.keys(cats).forEach(category => {
+            cats[category].forEach(subreddit => {
+                if(subreddit.match(RX) || category.match(RX)){
+                    $("#subreddits").append(`<div class="grid-subitem"><a href="/reddit/i/${subreddit}">${subreddit}</a></div>`)
+                }
+            })
+        })
+    }
+</script>
+</body>

@@ -1,0 +1,59 @@
+        // public async Task<IActionResult> Comments(string id)
+        // {
+            // Comments = new List<RedditComment>();
+            // string response = await Get($"https://api.reddit.com/comments/{id}");
+            // JToken json = JToken.Parse(response);
+            // JArray children = json[1]["data"]["children"].ToObject<JArray>();
+            // foreach (var child in children)
+            // {
+            //     if (child["kind"].ToString() == "more")
+            //     {
+            //         continue;
+            //     }
+            //     JToken childData = child["data"];
+            //     RedditComment redditComment = JsonConvert.DeserializeObject<RedditComment>(childData.ToString());
+            //     Comments.Add(redditComment);
+            //     GetChildComments(child);
+            // }
+
+
+            // return View(Comments);
+        // }
+
+        // public void GetChildComments(JToken parent_comment)
+        // {
+        //     if (parent_comment["data"]["replies"].ToString() == "")
+        //     {
+        //         return;
+        //     }
+        //     JArray children = parent_comment["data"]["replies"]["data"]["children"].ToObject<JArray>();
+        //     foreach (var child in children)
+        //     {
+        //         if (child["kind"].ToString() == "more")
+        //         {
+        //             continue;
+        //         }
+        //         JToken childData = child["data"];
+        //         RedditComment redditComment = JsonConvert.DeserializeObject<RedditComment>(childData.ToString());
+        //         Comments.Add(redditComment);
+
+        //         GetChildComments(child);
+        //     }
+        // }
+
+        // public async Task<ActionResult> Post(string after, string subreddit)
+        // {
+            // string response = await Get($"https://api.reddit.com/r/{subreddit}?after={Posts[Posts.Count - 1].name}");
+            // List<RedditPost> RList = JsonToObject(response);
+            // foreach (var item in RList)
+            // {
+            // Posts.Add(item);
+            //     if (await _context.FindAsync<RedditPost>(item.id) == null)
+            //     {
+            //         await _context.AddAsync(item);
+            //         await _context.SaveChangesAsync();
+            //     }
+            // }
+        //     var Posts = _context.Posts.Where(a => a.subreddit == subreddit).ToList();
+        //     return PartialView("_post", Posts);
+        // }

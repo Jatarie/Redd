@@ -1,0 +1,20 @@
+<div id="login-overlay" >
+    <div class="escape-x link-like" id="form-exit">[x]</div>
+    <div>
+        <span>Log in</span>
+    @await Html.PartialAsync("_LoginFormPartial", (UserLogInModel)null)
+    </div>
+    <div>
+        <span>Register</span>
+    @await Html.PartialAsync("_RegisterFormPartial", (UserRegistrationModel)null)
+    </div>
+    <div>
+        <a asp-controller="Account" asp-action="GoogleLogin">Google</a>
+    </div>
+</div>
+
+<script>
+    $("#form-exit").click(function(){
+        $("#login-overlay").css({"display": "none"})
+    })
+</script>

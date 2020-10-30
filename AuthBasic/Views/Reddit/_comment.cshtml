@@ -1,0 +1,14 @@
+@model CommentTree
+
+<div class="comment comment-@Model.comment.parity">
+@Html.DisplayFor(i => Model.comment)
+
+</div>
+
+@if (Model.children != null){
+    @foreach (var child in Model.children)
+    {
+        @await Html.PartialAsync("_comment.cshtml", child, ViewData)
+    }
+}
+</div>

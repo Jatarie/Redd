@@ -1,0 +1,34 @@
+@model RedditComment;
+@using Microsoft.AspNetCore.Identity
+
+
+<div>
+    <a href="/reddit/user/">@Model.author</a> 62 points @Model.createdString
+    <div>
+    @Model.body
+    </div>
+
+    <span class="link-like" id="replybutton-@Model.id">Reply</span>
+    <div id="reply-@Model.id" style="display:none">
+    @await Html.PartialAsync("_createComment", Model)
+    <script>
+        
+    $('#replybutton-@Model.id').click(function() {
+        if('@User.Identity.Name' == ""){
+        $('#login-overlay').css({
+            'display': 'block'
+        });
+
+        }
+        else{
+        $('#reply-@Model.id').css({
+            'display': 'block'
+        });
+        $('#textarea-@Model.id').focus().val("")
+        }
+    })
+
+    </script>
+</div>
+
+

@@ -1,0 +1,9 @@
+@model AuthBasic.Models.UserLogInModel
+
+<form asp-controller="account" asp-action="LogIn" asp-route-ReturnURL="@ViewData["ReturnURL"]">
+    <label asp-for="UserName" ></label>
+    <input asp-for="UserName" />
+    <label asp-for="Password" ></label>
+    <input asp-for="Password" />
+    <input type="submit" value="LogIn"/>
+</form>

@@ -1,0 +1,28 @@
+@* @model AuthBasic.Models.CommentsPage; *@
+@model CommentsPage;
+@using Microsoft.AspNetCore.Mvc.ViewFeatures;
+
+<head>
+    <link rel="stylesheet" runat="server" media="screen" href="~/css/styles.css" />
+    <script src="~/js/comments.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<div class="comments-post">
+@Html.DisplayFor(a => Model.post)
+
+    @if (Model.post.body != null){
+        <div class="post-body">
+            @Model.post.body
+        </div>
+    }
+</div>
+@{
+    var TopLevelCommentsList = Model.commentTree.children;
+}
+@await Html.PartialAsync("_createComment", new RedditComment(){postID = Model.post.id, id = int.Parse(Model.post.id)})
+@foreach (var TopLevelComment in TopLevelCommentsList)
+{
+    @await Html.PartialAsync("_comment.cshtml", TopLevelComment, ViewData)
+}
+

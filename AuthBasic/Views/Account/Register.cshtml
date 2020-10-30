@@ -1,0 +1,15 @@
+@model AuthBasic.Models.UserRegistrationModel
+
+<form asp-controller="account" asp-action="register" >
+    <label asp-for="UserName" ></label>
+    <input asp-for="UserName" />
+    <label asp-for="Password" ></label>
+    <input asp-for="Password" />
+    <label asp-for="PasswordConfirmation" ></label>
+    <input asp-for="PasswordConfirmation" />
+    <input type="submit" value="Create Account"/>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
